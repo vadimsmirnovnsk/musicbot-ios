@@ -13,19 +13,9 @@
 		3011B6F51B9B70A500D00BF9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3011B6F31B9B70A500D00BF9 /* Main.storyboard */; };
 		3011B6F71B9B70A500D00BF9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3011B6F61B9B70A500D00BF9 /* Images.xcassets */; };
 		3011B6FA1B9B70A500D00BF9 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3011B6F81B9B70A500D00BF9 /* LaunchScreen.xib */; };
-		3011B7061B9B70A500D00BF9 /* musicbotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3011B7051B9B70A500D00BF9 /* musicbotTests.m */; };
+		30696B201B9C1D3F002928F0 /* MusicDownloadController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30696B1F1B9C1D3F002928F0 /* MusicDownloadController.m */; };
 		3C8A10EFD1E23CF3C18C9F2B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28AE011840FF78D77C8D819B /* libPods.a */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		3011B7001B9B70A500D00BF9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3011B6DE1B9B70A500D00BF9 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 3011B6E51B9B70A500D00BF9;
-			remoteInfo = musicbot;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		28AE011840FF78D77C8D819B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,9 +29,9 @@
 		3011B6F41B9B70A500D00BF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3011B6F61B9B70A500D00BF9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3011B6F91B9B70A500D00BF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		3011B6FF1B9B70A500D00BF9 /* musicbotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = musicbotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3011B7041B9B70A500D00BF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3011B7051B9B70A500D00BF9 /* musicbotTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = musicbotTests.m; sourceTree = "<group>"; };
+		30696B1D1B9B992A002928F0 /* musicbot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = musicbot.entitlements; sourceTree = "<group>"; };
+		30696B1E1B9C1D3F002928F0 /* MusicDownloadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicDownloadController.h; sourceTree = "<group>"; };
+		30696B1F1B9C1D3F002928F0 /* MusicDownloadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicDownloadController.m; sourceTree = "<group>"; };
 		4EA474255F332E4A8C3AA5F9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		EDACBEC778C6BA92052EC381 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -55,13 +45,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3011B6FC1B9B70A500D00BF9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -69,7 +52,6 @@
 			isa = PBXGroup;
 			children = (
 				3011B6E81B9B70A500D00BF9 /* musicbot */,
-				3011B7021B9B70A500D00BF9 /* musicbotTests */,
 				3011B6E71B9B70A500D00BF9 /* Products */,
 				64D9832FEA69964C3160551A /* Pods */,
 				D1516CACFFF34E982A13DED6 /* Frameworks */,
@@ -80,7 +62,6 @@
 			isa = PBXGroup;
 			children = (
 				3011B6E61B9B70A500D00BF9 /* musicbot.app */,
-				3011B6FF1B9B70A500D00BF9 /* musicbotTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -88,8 +69,11 @@
 		3011B6E81B9B70A500D00BF9 /* musicbot */ = {
 			isa = PBXGroup;
 			children = (
+				30696B1D1B9B992A002928F0 /* musicbot.entitlements */,
 				3011B6ED1B9B70A500D00BF9 /* AppDelegate.h */,
 				3011B6EE1B9B70A500D00BF9 /* AppDelegate.m */,
+				30696B1E1B9C1D3F002928F0 /* MusicDownloadController.h */,
+				30696B1F1B9C1D3F002928F0 /* MusicDownloadController.m */,
 				3011B6F01B9B70A500D00BF9 /* ViewController.h */,
 				3011B6F11B9B70A500D00BF9 /* ViewController.m */,
 				3011B6F31B9B70A500D00BF9 /* Main.storyboard */,
@@ -105,23 +89,6 @@
 			children = (
 				3011B6EA1B9B70A500D00BF9 /* Info.plist */,
 				3011B6EB1B9B70A500D00BF9 /* main.m */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		3011B7021B9B70A500D00BF9 /* musicbotTests */ = {
-			isa = PBXGroup;
-			children = (
-				3011B7051B9B70A500D00BF9 /* musicbotTests.m */,
-				3011B7031B9B70A500D00BF9 /* Supporting Files */,
-			);
-			path = musicbotTests;
-			sourceTree = "<group>";
-		};
-		3011B7031B9B70A500D00BF9 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				3011B7041B9B70A500D00BF9 /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -165,24 +132,6 @@
 			productReference = 3011B6E61B9B70A500D00BF9 /* musicbot.app */;
 			productType = "com.apple.product-type.application";
 		};
-		3011B6FE1B9B70A500D00BF9 /* musicbotTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3011B70C1B9B70A500D00BF9 /* Build configuration list for PBXNativeTarget "musicbotTests" */;
-			buildPhases = (
-				3011B6FB1B9B70A500D00BF9 /* Sources */,
-				3011B6FC1B9B70A500D00BF9 /* Frameworks */,
-				3011B6FD1B9B70A500D00BF9 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				3011B7011B9B70A500D00BF9 /* PBXTargetDependency */,
-			);
-			name = musicbotTests;
-			productName = musicbotTests;
-			productReference = 3011B6FF1B9B70A500D00BF9 /* musicbotTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -194,10 +143,15 @@
 				TargetAttributes = {
 					3011B6E51B9B70A500D00BF9 = {
 						CreatedOnToolsVersion = 6.4;
-					};
-					3011B6FE1B9B70A500D00BF9 = {
-						CreatedOnToolsVersion = 6.4;
-						TestTargetID = 3011B6E51B9B70A500D00BF9;
+						DevelopmentTeam = T8VV4TJVDE;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -215,7 +169,6 @@
 			projectRoot = "";
 			targets = (
 				3011B6E51B9B70A500D00BF9 /* musicbot */,
-				3011B6FE1B9B70A500D00BF9 /* musicbotTests */,
 			);
 		};
 /* End PBXProject section */
@@ -228,13 +181,6 @@
 				3011B6F51B9B70A500D00BF9 /* Main.storyboard in Resources */,
 				3011B6FA1B9B70A500D00BF9 /* LaunchScreen.xib in Resources */,
 				3011B6F71B9B70A500D00BF9 /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		3011B6FD1B9B70A500D00BF9 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,28 +225,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				3011B6F21B9B70A500D00BF9 /* ViewController.m in Sources */,
+				30696B201B9C1D3F002928F0 /* MusicDownloadController.m in Sources */,
 				3011B6EF1B9B70A500D00BF9 /* AppDelegate.m in Sources */,
 				3011B6EC1B9B70A500D00BF9 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3011B6FB1B9B70A500D00BF9 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3011B7061B9B70A500D00BF9 /* musicbotTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		3011B7011B9B70A500D00BF9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 3011B6E51B9B70A500D00BF9 /* musicbot */;
-			targetProxy = 3011B7001B9B70A500D00BF9 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		3011B6F31B9B70A500D00BF9 /* Main.storyboard */ = {
@@ -358,7 +289,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -396,7 +327,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -409,9 +340,13 @@
 			baseConfigurationReference = 4EA474255F332E4A8C3AA5F9 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = musicbot/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -420,43 +355,13 @@
 			baseConfigurationReference = EDACBEC778C6BA92052EC381 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = musicbot/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
-		3011B70D1B9B70A500D00BF9 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = musicbotTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/musicbot.app/musicbot";
-			};
-			name = Debug;
-		};
-		3011B70E1B9B70A500D00BF9 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = musicbotTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/musicbot.app/musicbot";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
@@ -477,15 +382,6 @@
 			buildConfigurations = (
 				3011B70A1B9B70A500D00BF9 /* Debug */,
 				3011B70B1B9B70A500D00BF9 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		3011B70C1B9B70A500D00BF9 /* Build configuration list for PBXNativeTarget "musicbotTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3011B70D1B9B70A500D00BF9 /* Debug */,
-				3011B70E1B9B70A500D00BF9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
