@@ -3,10 +3,14 @@
 #import <AFNetworking/AFNetworking.h>
 #import <XMLDictionary/XMLDictionary.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import <CommonCrypto/CommonDigest.h>
 
 static NSString *const kDGSYandexStorageDirTemplate		= @"http://storage.music.yandex.ru/get/%@/2.xml";
 static NSString *const kDGSYandexDownloadInfoTemplate	= @"http://storage.music.yandex.ru/download-info/%@/%@";
 static NSString *const kDGSYandexMP3Template			= @"http://%@/get-mp3/%@/%@%@?track-id=%@&region=225&from=service-search";
+static NSString *const kDGSYandexMP3MD5Template			= @"http://%@/get-mp3/%@/%@?track-id=%@&from=service-10-track&similarities-experiment=default";
+static NSString *const kDGSYandexMD5Salt				= @"XGRlBW9FXlekgbPrRHuSiA";
+// 'http://%s/get-mp3/%s/%s?track-id=%s&from=service-10-track&similarities-experiment=default'
 
 static NSString *const kDGSYandexStorageFilenameKey		= @"_filename";
 static NSString *const kDGSYandexDownloadInfoHostKey	= @"host";
@@ -54,22 +58,44 @@ static NSString *const kDGSYandexDownloadInfoTsKey		= @"ts";
 	@weakify(self);
 
 	NSString *xmlStorageDirURLString = [NSString stringWithFormat:kDGSYandexStorageDirTemplate, storageDir];
-	[self.manager GET:xmlStorageDirURLString
-		   parameters:nil
-			  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+	NSURL *URL = [NSURL URLWithString:xmlStorageDirURLString];
+	NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+
+	NSURLSession *session = [NSURLSession sharedSession];
+	NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+										 completionHandler:
+	 ^(NSData *data, NSURLResponse *response, NSError *error) {
 				@strongify(self);
 
-				NSData *data = (NSData *)responseObject;
+				NSLog(@"Storage Response: %@", response);
+
 				NSDictionary *xmlDictionary = [NSDictionary dictionaryWithXMLData:data];
 				NSLog(@"Response dictionary: %@", xmlDictionary);
 
 				[self getDownloadInfoWithStorageDir:storageDir
 										   filename:xmlDictionary[kDGSYandexStorageFilenameKey]
 										    trackId:trackId];
-			  }
-			  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-				NSLog(@"Error Getting Storage: %@", error);
-			  }];
+	 }];
+
+	[task resume];
+
+//	[self.manager GET:xmlStorageDirURLString
+//		   parameters:nil
+//			  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//				@strongify(self);
+//
+//				NSData *data = (NSData *)responseObject;
+//				NSDictionary *xmlDictionary = [NSDictionary dictionaryWithXMLData:data];
+//				NSLog(@"Response dictionary: %@", xmlDictionary);
+//
+//				[self getDownloadInfoWithStorageDir:storageDir
+//										   filename:xmlDictionary[kDGSYandexStorageFilenameKey]
+//										    trackId:trackId];
+//			  }
+//			  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//				NSLog(@"Error Getting Storage: %@", error);
+//			  }];
 }
 
 - (void)getDownloadInfoWithStorageDir:(NSString *)storageDir
@@ -81,12 +107,16 @@ static NSString *const kDGSYandexDownloadInfoTsKey		= @"ts";
 	NSString *xmlDownloadInfoURLString = [NSString stringWithFormat:kDGSYandexDownloadInfoTemplate,
 											storageDir, filename];
 
-	[self.manager GET:xmlDownloadInfoURLString
-		   parameters:nil
-			  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+	NSURL *URL = [NSURL URLWithString:xmlDownloadInfoURLString];
+	NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+
+	NSURLSession *session = [NSURLSession sharedSession];
+	NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+										 completionHandler:
+	 ^(NSData *data, NSURLResponse *response, NSError *error) {
 				@strongify(self);
 
-				NSData *data = (NSData *)responseObject;
+				NSLog(@"Info Response: %@", response);
 				NSDictionary *xmlDictionary = [NSDictionary dictionaryWithXMLData:data];
 				NSLog(@"Response dictionary: %@", xmlDictionary);
 
@@ -97,10 +127,30 @@ static NSString *const kDGSYandexDownloadInfoTsKey		= @"ts";
 								  ts:xmlDictionary[kDGSYandexDownloadInfoTsKey]
 								path:xmlDictionary[kDGSYandexDownloadInfoPathKey]
 							 trackId:trackId];
-			  }
-			  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-				NSLog(@"Error Getting DownloadInfo: %@", error);
-			  }];
+	 }];
+
+	[task resume];
+
+//	[self.manager GET:xmlDownloadInfoURLString
+//		   parameters:nil
+//			  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//				@strongify(self);
+//
+//				NSData *data = (NSData *)responseObject;
+//				NSDictionary *xmlDictionary = [NSDictionary dictionaryWithXMLData:data];
+//				NSLog(@"Response dictionary: %@", xmlDictionary);
+//
+//				NSString *trackKey = [self trackKeyFromPath:xmlDictionary[kDGSYandexDownloadInfoPathKey]
+//														  s:xmlDictionary[kDGSYandexDownloadInfoSKey]];
+//				[self getMP3WithHost:xmlDictionary[kDGSYandexDownloadInfoHostKey]
+//							trackKey:trackKey
+//								  ts:xmlDictionary[kDGSYandexDownloadInfoTsKey]
+//								path:xmlDictionary[kDGSYandexDownloadInfoPathKey]
+//							 trackId:trackId];
+//			  }
+//			  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//				NSLog(@"Error Getting DownloadInfo: %@", error);
+//			  }];
 }
 
 - (void)getMP3WithHost:(NSString *)host
@@ -109,22 +159,53 @@ static NSString *const kDGSYandexDownloadInfoTsKey		= @"ts";
 				  path:(NSString *)path
 			   trackId:(NSString *)trackId
 {
-	NSString *mp3DownloadInfoURLString = [NSString stringWithFormat:kDGSYandexMP3Template,
-											host, trackKey, ts, path, trackId];
+	NSString *hash = [self md5String:[kDGSYandexMD5Salt stringByAppendingString:trackKey]];
+	NSString *fullPath = [ts stringByAppendingString:path];
+	NSString *mp3DownloadInfoURLString = [NSString stringWithFormat:kDGSYandexMP3MD5Template,
+											host, hash, fullPath, trackId];
 
-	[self.manager GET:mp3DownloadInfoURLString
-		   parameters:nil
-			  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+// 'http://%s/get-mp3/%s/%s?track-id=%s&from=service-10-track&similarities-experiment=default'
+//my $url = sprintf(DOWNLOAD_PATH_MASK, $fields{host}, $hash, $fields{ts}.$fields{path}, (split /\./, $storage_dir)[1]);
+
+	NSURL *URL = [NSURL URLWithString:mp3DownloadInfoURLString];
+	NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+
+	NSURLSession *session = [NSURLSession sharedSession];
+	NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+										 completionHandler:
+	 ^(NSData *data, NSURLResponse *response, NSError *error) {
+				NSLog(@"MP3 Response: %@", response);
+				NSLog(@"MP3 Data: %@", data);
 //				@strongify(self);
+//				
+//				NSDictionary *xmlDictionary = [NSDictionary dictionaryWithXMLData:data];
+//				NSLog(@"Response dictionary: %@", xmlDictionary);
+//
+//				NSString *trackKey = [self trackKeyFromPath:xmlDictionary[kDGSYandexDownloadInfoPathKey]
+//														  s:xmlDictionary[kDGSYandexDownloadInfoSKey]];
+//				[self getMP3WithHost:xmlDictionary[kDGSYandexDownloadInfoHostKey]
+//							trackKey:trackKey
+//								  ts:xmlDictionary[kDGSYandexDownloadInfoTsKey]
+//								path:xmlDictionary[kDGSYandexDownloadInfoPathKey]
+//							 trackId:trackId];
+			NSLog(@"MP3 Error: %@", error);
+	 }];
 
-//				NSData *data = (NSData *)responseObject;
+	[task resume];
 
-				NSLog(@"Response mp3: %@", responseObject);
-
-			  }
-			  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-				NSLog(@"Error Getting MP3: %@", error);
-			  }];
+//	[self.manager GET:mp3DownloadInfoURLString
+//		   parameters:nil
+//			  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+////				@strongify(self);
+//
+////				NSData *data = (NSData *)responseObject;
+//
+//				NSLog(@"Response mp3: %@", responseObject);
+//
+//			  }
+//			  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//				NSLog(@"Error Getting MP3: %@", error);
+//			  }];
 }
 
 - (NSString *)trackKeyFromPath:(NSString *)path s:(NSString *)s
@@ -132,6 +213,18 @@ static NSString *const kDGSYandexDownloadInfoTsKey		= @"ts";
 	return [[path substringFromIndex:1] stringByAppendingString:s];
 }
 
+- (NSString *)md5String:(NSString*)concat
+{
+    const char *concat_str = [concat UTF8String];
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(concat_str, strlen(concat_str), result);
+    NSMutableString *hash = [NSMutableString string];
+    for (int i = 0; i < 16; i++)
+        [hash appendFormat:@"%02X", result[i]];
+
+	NSLog(@"Hash: %@", hash);
+    return [hash lowercaseString];
+}
 
 //return 'http://%s/get-mp3/%s/%s%s?track-id=%d&region=225&from=service-search' % (
 //            file_path_soup.find('host').text,
