@@ -29,10 +29,18 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
 	NSLog(@"Did receive: %@", userInfo);
-	NSString *storageDir = @"20538_cad1105b.21458623";
-	NSString *trackId = @"21458623";
+//	NSString *storageDir = @"20538_cad1105b.21458623";
+//	NSString *trackId = @"21458623";
+	NSString *rawStorageDir = userInfo[@"storageDir"];
+	NSString *storageDir = [rawStorageDir stringByReplacingOccurrencesOfString:@"`" withString:@""];
+	NSArray *storageDirComponents = [storageDir componentsSeparatedByString:@"."];
+	NSString *trackId = storageDirComponents.lastObject;
 
-	[[MusicDownloadController sharedController] getInfoForStorageDir:storageDir trackId:trackId];
+	if (storageDir.length && trackId.length)
+	{
+		[[MusicDownloadController sharedController] getInfoForStorageDir:storageDir
+																 trackId:trackId];
+	}
 
 	completionHandler(UIBackgroundFetchResultNoData);
 }

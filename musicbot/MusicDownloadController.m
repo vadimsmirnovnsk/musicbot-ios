@@ -1,5 +1,7 @@
 #import "MusicDownloadController.h"
 
+#import "BGMusicPlayer.h"
+
 #import <AFNetworking/AFNetworking.h>
 #import <XMLDictionary/XMLDictionary.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
@@ -164,32 +166,29 @@ static NSString *const kDGSYandexDownloadInfoTsKey		= @"ts";
 	NSString *mp3DownloadInfoURLString = [NSString stringWithFormat:kDGSYandexMP3MD5Template,
 											host, hash, fullPath, trackId];
 
-// 'http://%s/get-mp3/%s/%s?track-id=%s&from=service-10-track&similarities-experiment=default'
-//my $url = sprintf(DOWNLOAD_PATH_MASK, $fields{host}, $hash, $fields{ts}.$fields{path}, (split /\./, $storage_dir)[1]);
-
 	NSURL *URL = [NSURL URLWithString:mp3DownloadInfoURLString];
 	NSURLRequest *request = [NSURLRequest requestWithURL:URL];
 
 	NSURLSession *session = [NSURLSession sharedSession];
-	NSURLSessionDataTask *task = [session dataTaskWithRequest:request
-										 completionHandler:
-	 ^(NSData *data, NSURLResponse *response, NSError *error) {
-				NSLog(@"MP3 Response: %@", response);
-				NSLog(@"MP3 Data: %@", data);
-//				@strongify(self);
-//				
-//				NSDictionary *xmlDictionary = [NSDictionary dictionaryWithXMLData:data];
-//				NSLog(@"Response dictionary: %@", xmlDictionary);
+//	NSURLSessionDataTask *task = [session dataTaskWithRequest:request
+//											completionHandler:
+//	 ^(NSData *data, NSURLResponse *response, NSError *error) {
+//				NSLog(@"MP3 Response: %@", response);
+//				NSLog(@"MP3 Data: %@", data);
 //
-//				NSString *trackKey = [self trackKeyFromPath:xmlDictionary[kDGSYandexDownloadInfoPathKey]
-//														  s:xmlDictionary[kDGSYandexDownloadInfoSKey]];
-//				[self getMP3WithHost:xmlDictionary[kDGSYandexDownloadInfoHostKey]
-//							trackKey:trackKey
-//								  ts:xmlDictionary[kDGSYandexDownloadInfoTsKey]
-//								path:xmlDictionary[kDGSYandexDownloadInfoPathKey]
-//							 trackId:trackId];
-			NSLog(@"MP3 Error: %@", error);
-	 }];
+//			NSLog(@"MP3 Error: %@", error);
+//	 }];
+
+	NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:request
+		completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+			[[BGMusicPlayer sharedPlayer] playFile:location];
+			NSLog(@"MP3 Location: %@", location);
+
+			if (error)
+			{
+				NSLog(@"MP3 Error: %@", error);
+			}
+	}];
 
 	[task resume];
 
@@ -217,7 +216,7 @@ static NSString *const kDGSYandexDownloadInfoTsKey		= @"ts";
 {
     const char *concat_str = [concat UTF8String];
     unsigned char result[CC_MD5_DIGEST_LENGTH];
-    CC_MD5(concat_str, strlen(concat_str), result);
+    CC_MD5(concat_str, (CC_LONG)strlen(concat_str), result);
     NSMutableString *hash = [NSMutableString string];
     for (int i = 0; i < 16; i++)
         [hash appendFormat:@"%02X", result[i]];
@@ -225,12 +224,5 @@ static NSString *const kDGSYandexDownloadInfoTsKey		= @"ts";
 	NSLog(@"Hash: %@", hash);
     return [hash lowercaseString];
 }
-
-//return 'http://%s/get-mp3/%s/%s%s?track-id=%d&region=225&from=service-search' % (
-//            file_path_soup.find('host').text,
-//            cursor.get_key(path[1:] + file_path_soup.find('s').text),
-//            file_path_soup.find('ts').text,
-//            path,
-//            int(self.id),
 
 @end
