@@ -1,9 +1,13 @@
 #import <Foundation/Foundation.h>
 
-@interface BGMusicPlayer : NSObject
+@interface BackgroundMusicPlayer : NSObject
 
 + (instancetype)sharedPlayer;
 
 - (void)playFile:(NSURL *)fileURL;
+- (void)play;
+- (void)stop;
+
+- (void)updateSongList;
 
 @end

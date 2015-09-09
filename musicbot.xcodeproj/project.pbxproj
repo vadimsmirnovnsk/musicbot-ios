@@ -14,8 +14,9 @@
 		3011B6F71B9B70A500D00BF9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3011B6F61B9B70A500D00BF9 /* Images.xcassets */; };
 		3011B6FA1B9B70A500D00BF9 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3011B6F81B9B70A500D00BF9 /* LaunchScreen.xib */; };
 		304C2D361B9C432900065050 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 304C2D351B9C432900065050 /* AVFoundation.framework */; };
-		304C2D391B9C44A600065050 /* BGMusicPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 304C2D381B9C44A600065050 /* BGMusicPlayer.m */; };
+		304C2D391B9C44A600065050 /* BackgroundMusicPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 304C2D381B9C44A600065050 /* BackgroundMusicPlayer.m */; };
 		30696B201B9C1D3F002928F0 /* MusicDownloadController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30696B1F1B9C1D3F002928F0 /* MusicDownloadController.m */; };
+		30D643C51BA05E460083E3FD /* PlaylistController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30D643C41BA05E460083E3FD /* PlaylistController.m */; };
 		3C8A10EFD1E23CF3C18C9F2B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 28AE011840FF78D77C8D819B /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -32,11 +33,13 @@
 		3011B6F61B9B70A500D00BF9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3011B6F91B9B70A500D00BF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		304C2D351B9C432900065050 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		304C2D371B9C44A600065050 /* BGMusicPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BGMusicPlayer.h; sourceTree = "<group>"; };
-		304C2D381B9C44A600065050 /* BGMusicPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BGMusicPlayer.m; sourceTree = "<group>"; };
+		304C2D371B9C44A600065050 /* BackgroundMusicPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundMusicPlayer.h; sourceTree = "<group>"; };
+		304C2D381B9C44A600065050 /* BackgroundMusicPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackgroundMusicPlayer.m; sourceTree = "<group>"; };
 		30696B1D1B9B992A002928F0 /* musicbot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = musicbot.entitlements; sourceTree = "<group>"; };
 		30696B1E1B9C1D3F002928F0 /* MusicDownloadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicDownloadController.h; sourceTree = "<group>"; };
 		30696B1F1B9C1D3F002928F0 /* MusicDownloadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MusicDownloadController.m; sourceTree = "<group>"; };
+		30D643C31BA05E460083E3FD /* PlaylistController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaylistController.h; sourceTree = "<group>"; };
+		30D643C41BA05E460083E3FD /* PlaylistController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaylistController.m; sourceTree = "<group>"; };
 		4EA474255F332E4A8C3AA5F9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		EDACBEC778C6BA92052EC381 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -78,10 +81,12 @@
 				30696B1D1B9B992A002928F0 /* musicbot.entitlements */,
 				3011B6ED1B9B70A500D00BF9 /* AppDelegate.h */,
 				3011B6EE1B9B70A500D00BF9 /* AppDelegate.m */,
+				304C2D371B9C44A600065050 /* BackgroundMusicPlayer.h */,
+				304C2D381B9C44A600065050 /* BackgroundMusicPlayer.m */,
 				30696B1E1B9C1D3F002928F0 /* MusicDownloadController.h */,
 				30696B1F1B9C1D3F002928F0 /* MusicDownloadController.m */,
-				304C2D371B9C44A600065050 /* BGMusicPlayer.h */,
-				304C2D381B9C44A600065050 /* BGMusicPlayer.m */,
+				30D643C31BA05E460083E3FD /* PlaylistController.h */,
+				30D643C41BA05E460083E3FD /* PlaylistController.m */,
 				3011B6F01B9B70A500D00BF9 /* ViewController.h */,
 				3011B6F11B9B70A500D00BF9 /* ViewController.m */,
 				3011B6F31B9B70A500D00BF9 /* Main.storyboard */,
@@ -233,7 +238,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				304C2D391B9C44A600065050 /* BGMusicPlayer.m in Sources */,
+				304C2D391B9C44A600065050 /* BackgroundMusicPlayer.m in Sources */,
+				30D643C51BA05E460083E3FD /* PlaylistController.m in Sources */,
 				3011B6F21B9B70A500D00BF9 /* ViewController.m in Sources */,
 				30696B201B9C1D3F002928F0 /* MusicDownloadController.m in Sources */,
 				3011B6EF1B9B70A500D00BF9 /* AppDelegate.m in Sources */,

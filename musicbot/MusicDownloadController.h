@@ -4,7 +4,7 @@
 
 + (instancetype)sharedController;
 
-- (void)getInfoForStorageDir:(NSString *)storageDir
-					 trackId:(NSString *)trackId;
+- (void)downloadTrackWithStorageDir:(NSString *)storageDir
+							trackId:(NSString *)trackId;
 
 @end
