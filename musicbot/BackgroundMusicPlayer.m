@@ -3,13 +3,12 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-@interface BackgroundMusicPlayer()
+@interface BackgroundMusicPlayer() <AVAudioPlayerDelegate>
 
 @property (nonatomic, strong) AVAudioPlayer *avPlayer;
-@property (nonatomic, strong) AVQueuePlayer *avQueuePlayer;
-@property (nonatomic, copy) NSDictionary *playList;
-@property (nonatomic, copy) NSArray *songList;
-@property (nonatomic, copy) NSArray *itemsArray;
+//@property (nonatomic, strong) AVQueuePlayer *avQueuePlayer;
+@property (nonatomic, copy) NSArray *songURLs;
+@property (nonatomic, assign) NSInteger currentPlayingSongNumber;
 
 @end
 
@@ -31,6 +30,8 @@
 	self = [super init];
 	if (!self) return nil;
 
+	_currentPlayingSongNumber = -1;
+
 	 // Set audio category with options - for this demo we'll do playback only
     NSError *__autoreleasing categoryError = nil;
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback
@@ -51,25 +52,40 @@
             NSLog(@"Could not activate audio session. %@", [activationError localizedDescription]);
         } else
 		{
-            NSLog(@"audio session could not be activated!");
+            NSLog(@"Audio session could not be activated!");
         }
     }
 
-	NSDictionary *playlist = [PlaylistController sharedController].playlist.copy;
-	_songList = [playlist allValues].copy;
-
-	NSMutableArray *itemsArray = [NSMutableArray arrayWithCapacity:_songList.count];
-
-	for (NSString *urlString in _songList)
-	{
-		[itemsArray addObject:[[AVPlayerItem alloc] initWithURL:[NSURL fileURLWithPath:urlString]]];
-	}
-
-	_itemsArray = itemsArray.copy;
-
-	_avQueuePlayer = [[AVQueuePlayer alloc] initWithItems:self.itemsArray];
+	[self updateSongList];
 
 	return self;
+}
+
+- (void)updateSongList
+{
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+	NSArray *directoryContent = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:NULL];
+
+	NSMutableArray *mutableSongList = [NSMutableArray arrayWithCapacity:directoryContent.count];
+	for (NSString *fileName in directoryContent)
+	{
+		NSURL *songURL = [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:fileName]];
+		[mutableSongList addObject:songURL];
+	}
+
+	self.songURLs = mutableSongList.copy;
+}
+
+- (void)playFileWithName:(NSString *)name
+{
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+
+	NSURL *songURL = [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:name]];
+	self.avPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:songURL error:nil];
+	self.avPlayer.delegate = self;
+	[self.avPlayer play];
 }
 
 - (void)playFile:(NSURL *)fileURL
@@ -79,6 +95,7 @@
 	if (!error)
 	{
 		[self.avPlayer play];
+		self.avPlayer.delegate = self;
 	}
 	else
 	{
@@ -86,15 +103,29 @@
 	}
 }
 
+- (void)playNext
+{
+	if (self.songURLs.count)
+	{
+		self.currentPlayingSongNumber ++;
+
+		if (self.songURLs.count <= (NSUInteger)self.currentPlayingSongNumber)
+		{
+			self.currentPlayingSongNumber = 0;
+		}
+
+		NSURL *nextSongURL = self.songURLs[self.currentPlayingSongNumber];
+		self.avPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:nextSongURL error:nil];
+		self.avPlayer.delegate = self;
+		[self.avPlayer play];
+	}
+}
+
 - (void)play
 {
-//	if (self.avPlayer)
-//	{
-//		[self.avPlayer play];
-//	}
-	if (self.avQueuePlayer)
+	if (self.avPlayer)
 	{
-		[self.avQueuePlayer play];
+		[self.avPlayer play];
 	}
 }
 
@@ -104,6 +135,17 @@
 	{
 		[self.avPlayer pause];
 	}
+}
+
+- (NSString *)currentTrackFileName
+{
+	return self.avPlayer.url.absoluteString;
+}
+
+// MARK: AVAudioPlayerDelegate
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+	[self playNext];
 }
 
 @end

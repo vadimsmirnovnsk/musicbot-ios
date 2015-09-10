@@ -5,6 +5,8 @@
 + (instancetype)sharedPlayer;
 
 - (void)playFile:(NSURL *)fileURL;
+- (void)playFileWithName:(NSString *)name;
+- (void)playNext;
 - (void)play;
 - (void)stop;
 

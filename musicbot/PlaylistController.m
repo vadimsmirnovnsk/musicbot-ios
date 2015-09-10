@@ -1,10 +1,12 @@
 #import "PlaylistController.h"
 
-static NSString *const kDGSPlaylistDictionaryKey = @"Playlist";
+#import "BackgroundMusicPlayer.h"
+
+static NSString *const kDGSPlaylistArrayKey = @"Playlist";
 
 @interface PlaylistController ()
 
-@property (nonatomic, strong) NSMutableDictionary *privatePlaylist;
+@property (nonatomic, strong) NSMutableArray *privatePlaylist;
 
 @end
 
@@ -26,11 +28,11 @@ static NSString *const kDGSPlaylistDictionaryKey = @"Playlist";
 	self = [super init];
 	if (!self) return nil;
 
-	_privatePlaylist = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kDGSPlaylistDictionaryKey].mutableCopy;
+	_privatePlaylist = [[NSUserDefaults standardUserDefaults] arrayForKey:kDGSPlaylistArrayKey].mutableCopy;
 
 	if (!_privatePlaylist)
 	{
-		_privatePlaylist = [[NSMutableDictionary alloc] init];
+		_privatePlaylist = [[NSMutableArray alloc] init];
 	}
 
 	return self;
@@ -66,15 +68,16 @@ static NSString *const kDGSPlaylistDictionaryKey = @"Playlist";
 	}
 
 	NSLog(@"MP3 was saved: %@", docsDirURL);
-	[self.privatePlaylist setValue:[docsDirURL absoluteString] forKey:fileName];
+	[self.privatePlaylist addObject:fileName];
 	[self savePlaylist];
+	[[BackgroundMusicPlayer sharedPlayer] updateSongList];
 
 	return docsDirURL;
 }
 
 - (void)savePlaylist
 {
-	[[NSUserDefaults standardUserDefaults] setObject:self.privatePlaylist forKey:kDGSPlaylistDictionaryKey];
+	[[NSUserDefaults standardUserDefaults] setObject:self.privatePlaylist forKey:kDGSPlaylistArrayKey];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 

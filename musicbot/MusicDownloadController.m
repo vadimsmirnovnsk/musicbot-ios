@@ -57,6 +57,7 @@ static NSString *const kDGSYandexDownloadInfoTsKey		= @"ts";
 // MARK: - Public
 - (void)downloadTrackWithStorageDir:(NSString *)storageDir
 							trackId:(NSString *)trackId
+						  forcePlay:(BOOL)forcePlay
 {
 	@weakify(self);
 
@@ -74,7 +75,8 @@ static NSString *const kDGSYandexDownloadInfoTsKey		= @"ts";
 				NSDictionary *xmlDictionary = [NSDictionary dictionaryWithXMLData:data];
 				[self getDownloadInfoWithStorageDir:storageDir
 										   filename:xmlDictionary[kDGSYandexStorageFilenameKey]
-										    trackId:trackId];
+										    trackId:trackId
+										  forcePlay:forcePlay];
 	 }];
 
 	[task resume];
@@ -84,6 +86,7 @@ static NSString *const kDGSYandexDownloadInfoTsKey		= @"ts";
 - (void)getDownloadInfoWithStorageDir:(NSString *)storageDir
 							 filename:(NSString *)filename
 							  trackId:(NSString *)trackId
+							forcePlay:(BOOL)forcePlay
 {
 	@weakify(self);
 
@@ -110,7 +113,8 @@ static NSString *const kDGSYandexDownloadInfoTsKey		= @"ts";
 								  ts:xmlDictionary[kDGSYandexDownloadInfoTsKey]
 								path:xmlDictionary[kDGSYandexDownloadInfoPathKey]
 							 trackId:trackId
-						  storageDir:storageDir];
+						  storageDir:storageDir
+						   forcePlay:forcePlay];
 	 }];
 
 	[task resume];
@@ -122,6 +126,7 @@ static NSString *const kDGSYandexDownloadInfoTsKey		= @"ts";
 				  path:(NSString *)path
 			   trackId:(NSString *)trackId
 			storageDir:(NSString *)storageDir
+			 forcePlay:(BOOL)forcePlay
 {
 	NSString *hash = [self md5String:[kDGSYandexMD5Salt stringByAppendingString:trackKey]];
 	NSString *fullPath = [ts stringByAppendingString:path];
@@ -142,7 +147,10 @@ static NSString *const kDGSYandexDownloadInfoTsKey		= @"ts";
 			{
 				NSURL *mp3LocalURL = [[PlaylistController sharedController] savedFileURLByTemporaryURL:location
 																						  withFileName:storageDir];
-				[[BackgroundMusicPlayer sharedPlayer] playFile:mp3LocalURL];
+				if (forcePlay)
+				{
+					[[BackgroundMusicPlayer sharedPlayer] playFile:mp3LocalURL];
+				}
 			}
 	}];
 

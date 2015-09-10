@@ -5,6 +5,7 @@
 + (instancetype)sharedController;
 
 - (void)downloadTrackWithStorageDir:(NSString *)storageDir
-							trackId:(NSString *)trackId;
+							trackId:(NSString *)trackId
+						  forcePlay:(BOOL)forcePlay;
 
 @end

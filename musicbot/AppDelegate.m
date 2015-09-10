@@ -9,8 +9,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:
+		[UIUserNotificationSettings settingsForTypes:( UIUserNotificationTypeSound |
+													   UIUserNotificationTypeAlert |
+													   UIUserNotificationTypeBadge) categories:nil]];
+
     [[UIApplication sharedApplication] registerForRemoteNotifications];
+
+	// Autoplay
+	[BackgroundMusicPlayer sharedPlayer];
 
 	return YES;
 }
@@ -36,8 +43,7 @@
 
 	NSString *action = userInfo[@"action"];
 
-	if ([action isEqualToString:@"add"])
-	{
+	void (^addMP3)(BOOL forcePlay) = ^(BOOL forcePlay) {
 		NSString *rawStorageDir = userInfo[@"storageDir"];
 		NSString *storageDir = [rawStorageDir stringByReplacingOccurrencesOfString:@"`" withString:@""];
 		NSArray *storageDirComponents = [storageDir componentsSeparatedByString:@"."];
@@ -45,18 +51,28 @@
 
 		if (storageDir.length && trackId.length)
 		{
-			NSString *existingTrackURLString = [PlaylistController sharedController].playlist[storageDir];
+			NSArray *existingTrackNames = [PlaylistController sharedController].playlist;
 
-			if (existingTrackURLString.length)
+			if ([existingTrackNames containsObject:storageDir])
 			{
-				[[BackgroundMusicPlayer sharedPlayer] playFile:[NSURL URLWithString:existingTrackURLString]];
+				[[BackgroundMusicPlayer sharedPlayer] playFileWithName:storageDir];
 			}
 			else
 			{
 				[[MusicDownloadController sharedController] downloadTrackWithStorageDir:storageDir
-																				trackId:trackId];
+																				trackId:trackId
+																			  forcePlay:forcePlay];
 			}
 		}
+	};
+
+	if ([action isEqualToString:@"add"])
+	{
+		addMP3(NO);
+	}
+	else if ([action isEqualToString:@"force"])
+	{
+		addMP3(YES);
 	}
 	else if ([action isEqualToString:@"stop"])
 	{
@@ -66,8 +82,12 @@
 	{
 		[[BackgroundMusicPlayer sharedPlayer] play];
 	}
+	else if ([action isEqualToString:@"next"])
+	{
+		[[BackgroundMusicPlayer sharedPlayer] playNext];
+	}
 
-	completionHandler(UIBackgroundFetchResultNoData);
+	completionHandler(UIBackgroundFetchResultNewData);
 }
 
 @end
