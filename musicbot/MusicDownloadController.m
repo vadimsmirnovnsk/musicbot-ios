@@ -72,11 +72,18 @@ static NSString *const kDGSYandexDownloadInfoTsKey		= @"ts";
 	 ^(NSData *data, NSURLResponse *response, NSError *error) {
 				@strongify(self);
 
-				NSDictionary *xmlDictionary = [NSDictionary dictionaryWithXMLData:data];
-				[self getDownloadInfoWithStorageDir:storageDir
-										   filename:xmlDictionary[kDGSYandexStorageFilenameKey]
-										    trackId:trackId
-										  forcePlay:forcePlay];
+				if (!error && data)
+				{
+					NSDictionary *xmlDictionary = [NSDictionary dictionaryWithXMLData:data];
+					[self getDownloadInfoWithStorageDir:storageDir
+											   filename:xmlDictionary[kDGSYandexStorageFilenameKey]
+												trackId:trackId
+											  forcePlay:forcePlay];
+				}
+				else
+				{
+					NSLog(@"ERROR: %@", error);
+				}
 	 }];
 
 	[task resume];

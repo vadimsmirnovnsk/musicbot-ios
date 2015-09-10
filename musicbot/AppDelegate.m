@@ -43,7 +43,8 @@
 
 	NSString *action = userInfo[@"action"];
 
-	void (^addMP3)(BOOL forcePlay) = ^(BOOL forcePlay) {
+	if ([action isEqualToString:@"add"])
+	{
 		NSString *rawStorageDir = userInfo[@"storageDir"];
 		NSString *storageDir = [rawStorageDir stringByReplacingOccurrencesOfString:@"`" withString:@""];
 		NSArray *storageDirComponents = [storageDir componentsSeparatedByString:@"."];
@@ -61,18 +62,32 @@
 			{
 				[[MusicDownloadController sharedController] downloadTrackWithStorageDir:storageDir
 																				trackId:trackId
-																			  forcePlay:forcePlay];
+																			  forcePlay:NO];
 			}
 		}
-	};
-
-	if ([action isEqualToString:@"add"])
-	{
-		addMP3(NO);
 	}
 	else if ([action isEqualToString:@"force"])
 	{
-		addMP3(YES);
+		NSString *rawStorageDir = userInfo[@"storageDir"];
+		NSString *storageDir = [rawStorageDir stringByReplacingOccurrencesOfString:@"`" withString:@""];
+		NSArray *storageDirComponents = [storageDir componentsSeparatedByString:@"."];
+		NSString *trackId = storageDirComponents.lastObject;
+
+		if (storageDir.length && trackId.length)
+		{
+			NSArray *existingTrackNames = [PlaylistController sharedController].playlist;
+
+			if ([existingTrackNames containsObject:storageDir])
+			{
+				[[BackgroundMusicPlayer sharedPlayer] playFileWithName:storageDir];
+			}
+			else
+			{
+				[[MusicDownloadController sharedController] downloadTrackWithStorageDir:storageDir
+																				trackId:trackId
+																			  forcePlay:YES];
+			}
+		}
 	}
 	else if ([action isEqualToString:@"stop"])
 	{
