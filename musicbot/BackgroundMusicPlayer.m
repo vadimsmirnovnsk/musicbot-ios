@@ -58,7 +58,15 @@
 
 	[self updateSongList];
 
+	[[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    [self becomeFirstResponder];
+
 	return self;
+}
+
+- (NSURL *)currentTrackURL
+{
+	return self.avPlayer.url;
 }
 
 - (void)updateSongList
@@ -142,10 +150,22 @@
 	return self.avPlayer.url.absoluteString;
 }
 
+- (void)killPlayer
+{
+	self.avPlayer.delegate = nil;
+	[self.avPlayer stop];
+	self.avPlayer = nil;
+}
+
 // MARK: AVAudioPlayerDelegate
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
 	[self playNext];
+}
+
+-(BOOL)canBecomeFirstResponder
+{
+    return YES;
 }
 
 @end

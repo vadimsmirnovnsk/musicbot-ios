@@ -75,6 +75,30 @@ static NSString *const kDGSPlaylistArrayKey = @"Playlist";
 	return docsDirURL;
 }
 
+- (void)removeCurrentTrack
+{
+//	NSError *err = nil;
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSString *docsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+	NSString *trackName = [BackgroundMusicPlayer sharedPlayer].currentTrackURL.lastPathComponent;
+	NSString *removeFilePath = [docsDir stringByAppendingPathComponent:trackName];
+
+	[[BackgroundMusicPlayer sharedPlayer] killPlayer];
+	[[BackgroundMusicPlayer sharedPlayer] playNext];
+
+	NSError *error;
+	if ([fileManager isDeletableFileAtPath:removeFilePath])
+	{
+		BOOL success = [[NSFileManager defaultManager] removeItemAtPath:removeFilePath error:&error];
+		if (!success)
+		{
+			NSLog(@"Error removing file at path: %@", error.localizedDescription);
+		}
+	}
+
+	[[BackgroundMusicPlayer sharedPlayer] updateSongList];
+}
+
 - (void)savePlaylist
 {
 	[[NSUserDefaults standardUserDefaults] setObject:self.privatePlaylist forKey:kDGSPlaylistArrayKey];

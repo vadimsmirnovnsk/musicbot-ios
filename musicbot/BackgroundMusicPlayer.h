@@ -1,6 +1,10 @@
 #import <Foundation/Foundation.h>
 
-@interface BackgroundMusicPlayer : NSObject
+@import UIKit;
+
+@interface BackgroundMusicPlayer : UIResponder
+
+@property (nonatomic, copy, readonly) NSURL *currentTrackURL;
 
 + (instancetype)sharedPlayer;
 
@@ -11,5 +15,6 @@
 - (void)stop;
 
 - (void)updateSongList;
+- (void)killPlayer;
 
 @end

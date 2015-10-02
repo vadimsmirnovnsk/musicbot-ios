@@ -8,5 +8,6 @@
 + (instancetype)sharedController;
 
 - (NSURL *)savedFileURLByTemporaryURL:(NSURL *)temporaryURL withFileName:(NSString *)fileName;
+- (void)removeCurrentTrack;
 
 @end

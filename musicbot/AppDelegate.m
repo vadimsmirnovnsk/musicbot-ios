@@ -101,6 +101,10 @@
 	{
 		[[BackgroundMusicPlayer sharedPlayer] playNext];
 	}
+	else if ([action isEqualToString:@"rm"])
+	{
+		[[PlaylistController sharedController] removeCurrentTrack];
+	}
 
 	completionHandler(UIBackgroundFetchResultNewData);
 }
